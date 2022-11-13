@@ -1,38 +1,44 @@
 package dataStructure;
 
 import dataStructure.ListNode;
-
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class Utils {
-    //快排模板，填坑法
-    static private void quickSort(int[] arr, int left, int right) {
-        if (left >= right) {   //递归出口，左等于右说明划分到只剩一个元素了
-            return;
+    /**
+     * 数组相关操作  创建 打印
+     * @param s
+     */
+
+    //创建一维数组  输入：[1,2,3] 返回 int[]{1,2,3}
+    public static int[] createArray(String s){
+        String[] strs = s.substring(1, s.length() - 1).split(",");
+        int[] array = new int[strs.length];
+        for (int i = 0; i < strs.length; i++) {
+            array[i] = Integer.valueOf(strs[i]);
         }
-        int partitionIndex = partition(arr, left, right);
-        quickSort(arr, left, partitionIndex - 1);
-        quickSort(arr, partitionIndex + 1, right);
+
+        return array;
+    }
+    //创建二维数组  输入：[[2,1,1],[2,3,1]] 返回 int[][]{{1,2,3},{2,3,1}}
+    public static int[][] createArray2D(String s){
+        s = s.substring(1, s.length() - 1);
+        String temp = "";
+        List<int[]> list = new LinkedList<>();
+        for (int i = 0; i < s.length(); i++) {
+            temp += s.charAt(i);
+            if (s.charAt(i) == '[') {
+                temp = "[";
+            }
+            if (s.charAt(i) == ']'){
+                list.add(createArray(temp));
+            }
+        }
+        return list.toArray(new int[0][0]);
     }
 
-
-     static  private  int partition(int a[], int left, int right){
-        int pivot = a[left];//最左侧为枢轴，其实算是记录了left这个位置的数值，这个位置此时可以随意被其他数填充
-        while(left < right){
-            while(a[right] >= pivot && left  < right) right--;
-            a[left] = a[right];
-            while(a[left] < pivot && left < right) left++;
-            a[right] = a[left];
-        }
-        a[left] = pivot;//将记录的数值填充回去
-        return left;
-    }
-
-
-
-
-    //打印数组
+    //print Array
     public static void printArray(int[] nums){
         StringBuilder sb = new StringBuilder("[");
         for(int i = 0; i < nums.length; i++){
@@ -42,17 +48,20 @@ public class Utils {
         sb.append("]");
         System.out.println(sb.toString());
     }
-    public static void printArray_2D(int[][] nums){
+
+    //print Array2D
+    public static void printArray2D(int[][] nums){
         for(int i = 0; i < nums.length; i++){
             printArray(nums[i]);
         }
-
     }
 
-
-
-
-    //构造链表：输入字符串，输出链表头
+    /**
+     * 链表相关操作
+     * @param s
+     * @return
+     */
+    //构造链表：输入字符串 [1,2,4] ，返回链表头 ListNode(1)
     public static ListNode creatListNode(String s){
         String [] listNode = s.substring(1,s.length()-1).split(",");
         ListNode head0 = new ListNode(Integer.parseInt(listNode[0]));
@@ -64,25 +73,21 @@ public class Utils {
         return head.next;
     }
 
-    //打印链表
+    //打印链表：输入链表头ListNode(1)，打印 [1,2,4]
     public static void printListNode(ListNode head0){
         ListNode head = head0;
         System.out.print("[");
         while(head != null){
             if(head.next == null){
                 System.out.print(head.val+"]");
-
             }
             else{
                 System.out.print(head.val+",");
-
             }
             head = head.next;
-
         }
-
     }
-    //创建数，输入序列化字符串，返回root节点，水平遍历，叶子节点的左右直接点为null  如[1,2,null,null,3,null,null]
+    //创建树，输入序列化字符串，返回root节点，水平遍历，叶子节点的左右直接点为null  如[1,2,null,null,3,null,null]
     public static TreeNode creatTree(String data) {
         if(data.equals("[]")) return null;
         String[] vals = data.substring(1, data.length() - 1).split(",");
